@@ -1,0 +1,66 @@
+version: "3"
+
+name: "jsisquesdev"
+
+services:
+  dashboard:
+    container_name: "jsisquesdev-dashboard"
+    image: "jsisques/frontend-dashboard"
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      NODE_ENV: "dev" # pro|dev
+      IDIOM: "es" # es|en
+      MONGODB_URL: "mongodb://admin:pass@mongo:27017/"
+    networks:
+      - proxynet
+
+  redis:
+    container_name: "jsisquesdev-redis"
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - proxynet
+
+  redisinsight:
+    container_name: "jsisquesdev-redisinsight"
+    image: redislabs/redisinsight:latest
+    restart: always
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./Users/ajeetraina/data/redisinsight:/db
+    networks:
+      - proxynet
+
+  mongo:
+    container_name: "jsisquesdev-mongo"
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: pass
+    ports:
+      - 27018:27017
+    networks:
+      - proxynet
+
+  mongo-express:
+    container_name: "jsisquesdev-mongo-express"
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+      ME_CONFIG_MONGODB_URL: mongodb://admin:pass@mongo:27017/
+    networks:
+      - proxynet
+
+networks:
+  proxynet:
+    name: "proxynet"
