@@ -5,10 +5,10 @@ name: "jsisquesdev"
 services:
   dashboard:
     container_name: "jsisquesdev-dashboard"
-    image: "jsisques/frontend-dashboard"
+    image: "jsisques/frontend-dashboard:dev"
     restart: always
     ports:
-      - 8080:8080
+      - 8080:3000
     environment:
       NODE_ENV: "dev" # pro|dev
       IDIOM: "es" # es|en
@@ -30,7 +30,7 @@ services:
     image: redislabs/redisinsight:latest
     restart: always
     ports:
-      - "8001:8001"
+      - "8002:8001"
     volumes:
       - ./Users/ajeetraina/data/redisinsight:/db
     networks:
