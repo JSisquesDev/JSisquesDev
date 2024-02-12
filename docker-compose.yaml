@@ -9,8 +9,9 @@ services:
     restart: always
     ports:
       - 8080:3000
-    env_file:
-      - env-files/env/.env.dashboard
+    environment:
+      NODE_ENV: "dev" # pro|dev
+      IDIOM: "es" # es|en
     networks:
       - proxynet
 
@@ -21,9 +22,20 @@ services:
   #   ports:
   #     - 8080:3000
   #   environment:
-  #     NODE_ENV: "dev" # pro|dev
-  #     IDIOM: "es" # es|en
-  #     MONGODB_URL: "mongodb://admin:pass@mongo:27017/"
+  # App configuration
+  # NODE_ENV=pro|dev
+  # DEFAULT_LANGUAGE=en|es
+
+  # # Network configuration
+  # PORT=port
+
+  # # Database configuration
+  # DATABASE_URL=url
+  # DATABASE=database
+  # DATABASE_PORT=port
+  # DATABASE_USERNAME=username
+  # DATABASE_PASSWORD=password
+  # DATABASE_DIALECT=mysql
   #   networks:
   #     - proxynet
 
@@ -51,8 +63,10 @@ services:
     container_name: "jsisquesdev-mongo"
     image: mongo
     restart: always
-    env_file:
-      - env-files/env/.env.mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "pass"
+
     ports:
       - 27018:27017
     networks:
@@ -64,8 +78,10 @@ services:
     restart: always
     ports:
       - 8081:8081
-    env_file:
-      - env-files/env/.env.mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "admin"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "pass"
+      ME_CONFIG_MONGODB_URL: "mongodb://admin:pass@mongo:27017/"
     networks:
       - proxynet
 
